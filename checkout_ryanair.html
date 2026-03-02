@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Payment Interface In Bootstrap 4</title>
+  <title>Ryanair Checkout</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
@@ -36,7 +36,8 @@
       margin-top: 10px !important;
     }
 
-    .card-header, .card-footer {
+    .card-header,
+    .card-footer {
       background-color: #144fcc;
       color: #fff;
     }
@@ -47,7 +48,9 @@
       }
     }
 
-    .btn-success, .btn-success:hover {
+    .btn-success,
+    .btn-success:hover,
+    .btn-success:active {
       background-color: #ffc726;
       border-color: #ffc726;
       color: #144fcc
@@ -159,76 +162,50 @@
           <div class="card">
             <div class="card-header">
               <div class="row">
-                <img src="https://z3n-ai-mixed307-5.zendesk.com/hc/theming_assets/01KJQ5KX70DDZ6KJPBXDJJZ905" alt="Ryanair" class="img-fluid" style="width: 28px; margin-left: 4px;">
+                <img src="https://z3n-ai-mixed307-5.zendesk.com/hc/theming_assets/01KJQ5KX70DDZ6KJPBXDJJZ905"
+                  alt="Ryanair" class="img-fluid" style="width: 28px; margin-left: 4px;">
                 <div class="col-md-8 payment-title">
-                  Payment Details
+                  Checkout
                 </div>
               </div>
             </div>
-            <div class="card-body" style="padding-bottom: 8px;">
-              <div id="overlay" onclick="off()">
-                <div id="justify-content-center align-items-center">
-                  <div class="spinner"></div>
-                </div>
-              </div>
-              <form action="payment_thank_you_ryanair.html" id="payment-form">
-                <label for="email" class="font-weight-bolder inputicon">Card Number</label>
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="XXXX-XXXX-XXXX-XXXX" /><span
-                    class="input-group-addon"><i class="fa fa-lock"></i></span>
-                </div>
-                <div class="row">
-                  <div class="col-sm-6 form-fields">
-                    <div class="container p-0">
-                      <label for="pwd" class="font-weight-bolder">EXPIRY DATE:</label>
-                      <div class="row">
-                        <div class="form-group col-xs-6 col-sm-6">
-                          <input type="text" class="form-control" placeholder="MM/YY" value="" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 form-fields">
-                    <div class="container p-0">
-                      <label for="pwd" class="font-weight-bolder">CV CODE:</label>
-                      <div class="row">
-                        <div class="form-group col-xs-6 col-sm-6">
-                          <input type="password" value="" class="form-control" placeholder="CVV" />
-                        </div>
-                      </div>
-                    </div>
+            <form action="secure_payment_ryanair.html" id="payment-form">
+              <div class="card-body" style="border-top: 1px solid rgba(0, 0, 0, .125); padding-top: 16px;">
+                <div id="overlay" onclick="off()">
+                  <div id="justify-content-center align-items-center">
+                    <div class="spinner"></div>
                   </div>
                 </div>
-
-            </div>
-            <div class="card-body" style="border-top: 1px solid rgba(0, 0, 0, .125); padding-top: 16px;">   
-              <div>
-                <label class="font-weight-bolder inputicon">Charge Amount:</label>
-                <div class="input-group" style="margin-bottom: 16px;">
-                  £<span id="charge-amount" />
+                <h2> <span id="outbound" /> </h2>
+                <div>
+                  <label class="font-weight-bolder inputicon">Flight Number:</label>&nbsp;&nbsp;<span id="flight-no" />
+                </div>
+                <div>
+                  <label class="font-weight-bolder inputicon">Booking Reference:</label>&nbsp;&nbsp;<span
+                    id="booking-ref" />
+                </div>
+                <div>
+                  <label class="font-weight-bolder inputicon">Product(s):</label>
+                  <div class="input-group" style="margin-bottom: 16px;">
+                    <p>-&nbsp;<span id="seat-type" /></p><b style="margin-left: 8px;">£<span id="charge-amount" /></b>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card-footer">
-              <button id="pay-button" type="submit" class="btn btn-success float-right text-right">
-                Pay
-              </button>
-              </form>
-            </div>
+              <div class="card-footer" style="height: 62px;">
+                <button id="pay-button" type="submit" class="btn btn-success float-right text-right">
+                  Secure Payment
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
   <script>
     $(document).ready(function () {
 
       let params = new URLSearchParams(window.location.search);
-
-      /* Send payment completion as app notify call
-      
-      let subdomain = params.get('subdomain');
-      let agent_id = params.get("agent_id");
-      let agent_email = params.get("agent_email");
-      let token = params.get("token");
-      let app_id = params.get("app_id");
-      */
 
       $('#payment-form').submit(function (e) {
         e.preventDefault();
@@ -236,10 +213,14 @@
 
 
         setTimeout(function () {
-          window.location.href = $('#payment-form').attr('action');
-        }, 1000);
+          window.location.href = $('#payment-form').attr('action') + "?charge_amount=" + params.get('charge_amount');
+        }, 500);
       });
 
+      document.getElementById('seat-type').innerHTML = params.get('seat_type') ?? "-";
+      document.getElementById('flight-no').innerHTML = params.get('flight_no') ?? "-";
+      document.getElementById('booking-ref').innerHTML = params.get('booking_ref') ?? "-";
+      document.getElementById('outbound').innerHTML = params.get('outbound') ?? "-";
       document.getElementById('charge-amount').innerHTML = params.get('charge_amount') ?? "-";
 
     });
