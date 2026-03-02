@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Payment Interface In Bootstrap 4</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+    crossorigin="anonymous"></script>
+  <style type="text/css">
+    section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .fa-lock {
+      background: #273746;
+      color: #fff;
+      line-height: 2.1;
+      padding: 8%;
+      width: 30px;
+      text-align: center;
+    }
+
+    .container {
+      margin-top: 10px !important;
+    }
+
+    @media (min-width: 360px) and (max-width: 767px) {
+      .col-md-4 .form-group {
+        margin-bottom: 0;
+      }
+    }
+
+    .form-fields {
+      width: 50%;
+    }
+
+    .payment-title {
+      font-weight: 16px;
+      font-weight: bold;
+    }
+
+    .card-body {
+      padding-top: 10px;
+      padding-bottom: 0px;
+    }
+
+    .spinner {
+      height: 60px;
+      width: 60px;
+      top: 35%;
+      right: 42%;
+      margin: auto;
+      display: block;
+      position: absolute;
+      -webkit-animation: rotation .6s infinite linear;
+      -moz-animation: rotation .6s infinite linear;
+      -o-animation: rotation .6s infinite linear;
+      animation: rotation .6s infinite linear;
+      border-left: 6px solid rgba(255, 255, 255, .15);
+      border-right: 6px solid rgba(255, 255, 255, .15);
+      border-bottom: 6px solid rgba(255, 255, 255, .15);
+      border-top: 6px solid rgba(255, 255, 255, 0.8);
+      border-radius: 100%;
+    }
+
+    @-webkit-keyframes rotation {
+      from {
+        -webkit-transform: rotate(0deg);
+      }
+
+      to {
+        -webkit-transform: rotate(359deg);
+      }
+    }
+
+    @-moz-keyframes rotation {
+      from {
+        -moz-transform: rotate(0deg);
+      }
+
+      to {
+        -moz-transform: rotate(359deg);
+      }
+    }
+
+    @-o-keyframes rotation {
+      from {
+        -o-transform: rotate(0deg);
+      }
+
+      to {
+        -o-transform: rotate(359deg);
+      }
+    }
+
+    @keyframes rotation {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(359deg);
+      }
+    }
+
+    #overlay {
+      position: absolute;
+      display: none;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    #overlay.show {
+      display: flex;
+    }
+  </style>
+</head>
+
+<body>
+  <section>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-header">
+              <div class="row">
+                <div class="col-md-8 payment-title">
+                  Payment Details
+                </div>
+              </div>
+            </div>
+            <div class="card-body" style="padding-bottom: 8px;">
+              <div id="overlay" onclick="off()">
+                <div id="justify-content-center align-items-center">
+                  <div class="spinner"></div>
+                </div>
+              </div>
+              <form action="payment_thank_you.html" id="payment-form">
+                <label for="email" class="font-weight-bolder inputicon">Card Number</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="XXXX-XXXX-XXXX-XXXX" /><span
+                    class="input-group-addon"><i class="fa fa-lock"></i></span>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6 form-fields">
+                    <div class="container p-0">
+                      <label for="pwd" class="font-weight-bolder">EXPIRY DATE:</label>
+                      <div class="row">
+                        <div class="form-group col-xs-6 col-sm-6">
+                          <input type="text" class="form-control" placeholder="MM/YY" value="" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 form-fields">
+                    <div class="container p-0">
+                      <label for="pwd" class="font-weight-bolder">CV CODE:</label>
+                      <div class="row">
+                        <div class="form-group col-xs-6 col-sm-6">
+                          <input type="password" value="" class="form-control" placeholder="CVV" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+            <div class="card-body" style="border-top: 1px solid rgba(0, 0, 0, .125); padding-top: 16px;">
+              <div>
+                <label class="font-weight-bolder inputicon">Seat type:</label>
+                <div class="input-group" style="margin-bottom: 16px;">
+                  <span id="seat-type" />
+                </div>
+                <div>
+                  <div>
+                    <label class="font-weight-bolder inputicon">Flight Number:</label>
+                    <div class="input-group" style="margin-bottom: 16px;">
+                      <span id="flight-no" />
+                    </div>
+                  </div>
+                  <div>
+                    <label class="font-weight-bolder inputicon">Booking Reference:</label>
+                    <div class="input-group" style="margin-bottom: 16px;">
+                      <span id="booking-ref" />
+                    </div>
+                  </div>
+                  <div>
+                    <label class="font-weight-bolder inputicon">Outbound:</label>
+                    <div class="input-group" style="margin-bottom: 16px;">
+                      <span id="outbound" />
+                    </div>
+                    <div>
+                      <div>
+                        <label class="font-weight-bolder inputicon">Charge Amount:</label>
+                        <div class="input-group" style="margin-bottom: 16px;">
+                          <span id="charge-amount" />
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button id="pay-button" type="submit" class="btn btn-success float-right text-right">
+                Pay
+              </button>
+              </form>
+            </div>
+  </section>
+  <script>
+    $(document).ready(function () {
+
+      let params = new URLSearchParams(window.location.search);
+
+      /* Send payment completion as app notify call
+      
+      let subdomain = params.get('subdomain');
+      let agent_id = params.get("agent_id");
+      let agent_email = params.get("agent_email");
+      let token = params.get("token");
+      let app_id = params.get("app_id");
+      */
+
+      $('#payment-form').submit(function (e) {
+        e.preventDefault();
+        $('#overlay').addClass('show');
+
+        /*
+        $.ajax({
+            type: "POST",
+            url: `https://${subdomain}.zendesk.com//api/v2/apps/notify`,
+            headers: {
+              Authorization: btoa(agent_email + "/token:" + token),
+              "Content-Type": "application/json" 
+            },
+            data: JSON.stringify({
+              app_id: app_id,
+              event: "paymentCompleted",
+              body: "Payment completed",
+              agent_id: agent_id
+            }),
+            complete: function() {
+                window.location.href = $('#payment-form').attr('action');
+            },
+            error: function(e) {
+                console.log({ e });
+            },
+            dataType: 'json',
+            contentType: 'application/json'
+          });
+        });
+        */
+
+        setTimeout(function () {
+          window.location.href = $('#payment-form').attr('action');
+        }, 1000);
+      });
+
+
+      document.getElementById('seat-type').innerHTML = params.get('seat_type') ?? "-";
+      document.getElementById('flight-no').innerHTML = params.get('flight_no') ?? "-";
+      document.getElementById('booking-ref').innerHTML = params.get('booking_ref') ?? "-";
+      document.getElementById('outbound').innerHTML = params.get('outbound') ?? "-";
+      document.getElementById('charge-amount').innerHTML = params.get('charge_amount') ?? "-";
+
+    });
+  </script>
+</body>
+
+</html>
