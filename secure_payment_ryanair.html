@@ -241,7 +241,15 @@
         }, 1000);
       });
 
-      document.getElementById('charge-amount').innerHTML = params.get('charge_amount') ?? "-";
+
+      let amount_value = params.get('charge_amount');
+      if (amount_value) {
+        const number = Number(amount_value);
+        if (!isNaN(number)) {
+          amount_value = number.toFixed(2);
+        }
+      }
+      document.getElementById('charge-amount').innerHTML = amount_value;
 
     });
   </script>

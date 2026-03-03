@@ -218,11 +218,19 @@
         }, 500);
       });
 
+      let amount_value = params.get('charge_amount');
+      if (amount_value) {
+        const number = Number(amount_value);
+        if (!isNaN(number)) {
+          amount_value = number.toFixed(2);
+        }
+      }
+
       document.getElementById('seat-type').innerHTML = params.get('seat_type') ?? "-";
       document.getElementById('flight-no').innerHTML = params.get('flight_no') ?? "-";
       document.getElementById('booking-ref').innerHTML = params.get('booking_ref') ?? "-";
       document.getElementById('outbound').innerHTML = params.get('outbound') ?? "-";
-      document.getElementById('charge-amount').innerHTML = params.get('charge_amount') ?? "-";
+      document.getElementById('charge-amount').innerHTML = amount_value;
 
     });
   </script>
