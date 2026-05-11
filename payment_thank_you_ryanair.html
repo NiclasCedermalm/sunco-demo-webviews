@@ -1,61 +1,234 @@
-
-<!-- W3hubs.com - Download Free Responsive Website Layout Templates designed on HTML5 CSS3,Bootstrap which are 100% Mobile friendly. w3Hubs all Layouts are responsive cross browser supported, best quality world class designs. -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Payment Interface In Bootstrap 4</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <style type="text/css">
-      section {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      input[type='number']::-webkit-inner-spin-button,
-      input[type='number']::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
-      .fa-lock {
-        background: #273746;
-        color: #fff;
-        line-height: 2.1;
-        padding: 8%;
-        width: 30px;
-        text-align: center;
-      }
-      .container {
-        margin-top: 10px !important;
-      }
-      @media (min-width: 360px) and (max-width: 767px) {
-        .col-md-4 .form-group {
-          margin-bottom: 0;
-        }
-      }
-    </style>
-  </head>
 
-  <body>
-    <section>
-      <div class="container">
-        <div class="row text-center">
-              <div class="col-lg-12">
-              <br><br> <h2 style="color: #144fcc">Thank you for your payment.</h2>
-              <p style="font-size:20px;color:#5C5C5C;">We've sent you a confirmation email.</p>
-          <br><br>
+<head>
+  <title>Ryanair Payment Confirmation</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+    crossorigin="anonymous"></script>
+  <style type="text/css">
+    section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .fa-lock {
+      background: #273746;
+      color: #fff;
+      line-height: 2.1;
+      padding: 8%;
+      width: 30px;
+      text-align: center;
+    }
+
+    .container {
+      margin-top: 10px !important;
+    }
+
+    .card-header,
+    .card-footer {
+      background-color: #144fcc;
+      color: #fff;
+    }
+
+    @media (min-width: 360px) and (max-width: 767px) {
+      .col-md-4 .form-group {
+        margin-bottom: 0;
+      }
+    }
+
+    .btn-success,
+    .btn-success:hover,
+    .btn-success:active {
+      background-color: #ffc726;
+      border-color: #ffc726;
+      color: #144fcc
+    }
+
+    .btn-success:not(:disabled):not(.disabled).active,
+    .btn-success:not(:disabled):not(.disabled):active,
+    .show>.btn-success.dropdown-toggle {
+      background-color: #ffc726;
+      border-color: #ffc726;
+      color: #144fcc
+    }
+
+    .payment-title {
+      font-weight: 16px;
+      font-weight: bold;
+      width: inherit;
+    }
+
+    .card-body {
+      padding-top: 24px;
+      padding-bottom: 16px;
+    }
+
+    .thank-you-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background-color: #e6f7e6;
+      color: #0fad00;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+
+    .thank-you-title {
+      color: #0fad00;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .thank-you-sub {
+      font-size: 18px;
+      color: #5C5C5C;
+      margin-bottom: 0;
+    }
+
+    .booking-summary {
+      background: #f7faff;
+      border: 1px solid rgba(20, 79, 204, 0.12);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .booking-summary .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      font-size: 14px;
+    }
+
+    .booking-summary .summary-row:last-child {
+      border-bottom: none;
+    }
+
+    .booking-summary .summary-label {
+      color: #6c757d;
+    }
+
+    .booking-summary .summary-value {
+      color: #273746;
+      font-weight: 600;
+    }
+
+    .booking-summary.hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <section>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-header">
+              <div class="row">
+                <img src="https://z3n-ai-mixed307-5.zendesk.com/hc/theming_assets/01KJQ5KX70DDZ6KJPBXDJJZ905"
+                  alt="Ryanair" class="img-fluid" style="width: 28px; margin-left: 4px;">
+                <div class="col-md-8 payment-title">
+                  Payment Confirmation
+                </div>
               </div>
-              
+            </div>
+            <div class="card-body text-center" style="border-top: 1px solid rgba(0, 0, 0, .125);">
+              <div class="thank-you-icon">
+                <i class="fa fa-check"></i>
+              </div>
+              <h2 class="thank-you-title">Thank you for your payment.</h2>
+              <p class="thank-you-sub">We've sent you a confirmation email.</p>
+
+              <div class="booking-summary hidden" id="booking-summary">
+                <div class="summary-row" id="row-outbound">
+                  <span class="summary-label">Flight</span>
+                  <span class="summary-value" id="outbound">-</span>
+                </div>
+                <div class="summary-row" id="row-flight-no">
+                  <span class="summary-label">Flight Number</span>
+                  <span class="summary-value" id="flight-no">-</span>
+                </div>
+                <div class="summary-row" id="row-booking-ref">
+                  <span class="summary-label">Booking Reference</span>
+                  <span class="summary-value" id="booking-ref">-</span>
+                </div>
+                <div class="summary-row" id="row-payment-method">
+                  <span class="summary-label">Paid with</span>
+                  <span class="summary-value" id="payment-method">-</span>
+                </div>
+                <div class="summary-row" id="row-amount">
+                  <span class="summary-label">Amount</span>
+                  <span class="summary-value">&pound;<span id="charge-amount">0.00</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
-  </body>
+    </div>
+  </section>
+  <script>
+    $(document).ready(function () {
+      const params = new URLSearchParams(window.location.search);
+
+      const paymentMethodLabels = {
+        apple_pay: 'Apple Pay',
+        google_pay: 'Google Pay',
+        card: 'Credit / Debit Card'
+      };
+
+      function setRow(rowId, valueId, rawValue, formatter) {
+        if (rawValue) {
+          const display = formatter ? formatter(rawValue) : rawValue;
+          document.getElementById(valueId).innerHTML = display;
+          document.getElementById(rowId).style.display = 'flex';
+          return true;
+        }
+        document.getElementById(rowId).style.display = 'none';
+        return false;
+      }
+
+      const hasOutbound = setRow('row-outbound', 'outbound', params.get('outbound'));
+      const hasFlightNo = setRow('row-flight-no', 'flight-no', params.get('flight_no'));
+      const hasBookingRef = setRow('row-booking-ref', 'booking-ref', params.get('booking_ref'));
+      const hasPaymentMethod = setRow('row-payment-method', 'payment-method', params.get('payment_method'), function (v) {
+        return paymentMethodLabels[v] || v;
+      });
+
+      let amountValue = params.get('charge_amount');
+      let hasAmount = false;
+      if (amountValue) {
+        const number = Number(amountValue);
+        if (!isNaN(number)) {
+          amountValue = number.toFixed(2);
+        }
+        document.getElementById('charge-amount').innerHTML = amountValue;
+        document.getElementById('row-amount').style.display = 'flex';
+        hasAmount = true;
+      } else {
+        document.getElementById('row-amount').style.display = 'none';
+      }
+
+      if (hasOutbound || hasFlightNo || hasBookingRef || hasPaymentMethod || hasAmount) {
+        document.getElementById('booking-summary').classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+
 </html>

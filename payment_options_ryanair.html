@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Ryanair Payment Options</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+    crossorigin="anonymous"></script>
+  <style type="text/css">
+    section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .fa-lock {
+      background: #273746;
+      color: #fff;
+      line-height: 2.1;
+      padding: 8%;
+      width: 30px;
+      text-align: center;
+    }
+
+    .container {
+      margin-top: 10px !important;
+    }
+
+    .card-header,
+    .card-footer {
+      background-color: #144fcc;
+      color: #fff;
+    }
+
+    .btn-success,
+    .btn-success:hover,
+    .btn-success:active {
+      background-color: #ffc726;
+      border-color: #ffc726;
+      color: #144fcc
+    }
+
+    .btn-success:not(:disabled):not(.disabled).active,
+    .btn-success:not(:disabled):not(.disabled):active,
+    .show>.btn-success.dropdown-toggle {
+      background-color: #ffc726;
+      border-color: #ffc726;
+      color: #144fcc
+    }
+
+    .btn-success:disabled {
+      background-color: #ffe9a8;
+      border-color: #ffe9a8;
+      color: #144fcc;
+      cursor: not-allowed;
+    }
+
+    .payment-title {
+      font-weight: 16px;
+      font-weight: bold;
+      width: inherit;
+    }
+
+    .card-body {
+      padding-top: 16px;
+      padding-bottom: 8px;
+    }
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(0, 0, 0, .15);
+      border-radius: 6px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+      background-color: #fff;
+    }
+
+    .payment-option:hover {
+      border-color: #144fcc;
+      background-color: #f7faff;
+    }
+
+    .payment-option.selected {
+      border-color: #144fcc;
+      box-shadow: 0 0 0 2px rgba(20, 79, 204, .15);
+      background-color: #f2f6ff;
+    }
+
+    .payment-option input[type="radio"] {
+      margin-right: 14px;
+      transform: scale(1.2);
+      accent-color: #144fcc;
+    }
+
+    .payment-option .option-left {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+
+    .payment-option .option-label {
+      font-weight: 600;
+      color: #273746;
+    }
+
+    .payment-option .option-sub {
+      display: block;
+      font-size: 12px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    .payment-brands {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      color: #fff;
+    }
+
+    .brand-visa {
+      background: #1a1f71;
+    }
+
+    .brand-mc {
+      background: #eb001b;
+      position: relative;
+    }
+
+    .brand-amex {
+      background: #2e77bb;
+    }
+
+    .brand-apple {
+      background: #000;
+      color: #fff;
+      padding: 0 10px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .brand-google {
+      background: #fff;
+      color: #5f6368;
+      border: 1px solid #dadce0;
+      padding: 0 10px;
+      font-family: "Google Sans", Arial, sans-serif;
+    }
+
+    .section-divider {
+      display: flex;
+      align-items: center;
+      color: #6c757d;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 8px 0 12px;
+    }
+
+    .section-divider::before,
+    .section-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(0, 0, 0, .1);
+    }
+
+    .section-divider span {
+      padding: 0 10px;
+    }
+
+    .secure-note {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      color: #6c757d;
+      margin-top: 4px;
+    }
+
+    .secure-note i {
+      margin-right: 6px;
+      color: #28a745;
+    }
+
+    .spinner {
+      height: 60px;
+      width: 60px;
+      top: 35%;
+      right: 42%;
+      margin: auto;
+      display: block;
+      position: absolute;
+      -webkit-animation: rotation .6s infinite linear;
+      -moz-animation: rotation .6s infinite linear;
+      -o-animation: rotation .6s infinite linear;
+      animation: rotation .6s infinite linear;
+      border-left: 6px solid rgba(255, 255, 255, .15);
+      border-right: 6px solid rgba(255, 255, 255, .15);
+      border-bottom: 6px solid rgba(255, 255, 255, .15);
+      border-top: 6px solid rgba(255, 255, 255, 0.8);
+      border-radius: 100%;
+    }
+
+    @-webkit-keyframes rotation {
+      from { -webkit-transform: rotate(0deg); }
+      to { -webkit-transform: rotate(359deg); }
+    }
+
+    @-moz-keyframes rotation {
+      from { -moz-transform: rotate(0deg); }
+      to { -moz-transform: rotate(359deg); }
+    }
+
+    @-o-keyframes rotation {
+      from { -o-transform: rotate(0deg); }
+      to { -o-transform: rotate(359deg); }
+    }
+
+    @keyframes rotation {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(359deg); }
+    }
+
+    #overlay {
+      position: absolute;
+      display: none;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    #overlay.show {
+      display: flex;
+    }
+
+    /* ---------- Apple Pay simulation ---------- */
+    #apple-pay-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      justify-content: center;
+      align-items: flex-end;
+      background-color: rgba(0, 0, 0, 0);
+      z-index: 1000;
+      transition: background-color .3s ease;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    }
+
+    #apple-pay-overlay.show {
+      display: flex;
+      background-color: rgba(0, 0, 0, 0.55);
+    }
+
+    .ap-sheet {
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      border-radius: 18px 18px 0 0;
+      padding: 12px 20px 28px;
+      box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.25);
+      transform: translateY(100%);
+      transition: transform .35s cubic-bezier(.2, .7, .3, 1);
+      color: #000;
+    }
+
+    #apple-pay-overlay.show .ap-sheet {
+      transform: translateY(0);
+    }
+
+    .ap-handle {
+      width: 36px;
+      height: 4px;
+      background: #d1d1d6;
+      border-radius: 2px;
+      margin: 4px auto 14px;
+    }
+
+    .ap-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .ap-cancel {
+      background: none;
+      border: none;
+      color: #007aff;
+      font-size: 15px;
+      font-weight: 400;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .ap-brand {
+      display: flex;
+      align-items: center;
+      font-size: 17px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .ap-brand .ap-logo {
+      font-size: 18px;
+      margin-right: 4px;
+    }
+
+    .ap-title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      color: #000;
+      margin: 8px 0 18px;
+    }
+
+    .ap-card {
+      background: #f2f2f7;
+      border-radius: 14px;
+      padding: 4px 16px;
+      margin-bottom: 18px;
+    }
+
+    .ap-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+    }
+
+    .ap-row:last-child {
+      border-bottom: none;
+    }
+
+    .ap-row-label {
+      font-size: 14px;
+      color: #6e6e73;
+    }
+
+    .ap-row-value {
+      font-size: 15px;
+      font-weight: 500;
+      color: #000;
+      display: flex;
+      align-items: center;
+    }
+
+    .ap-row-value .mini-visa {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a1f71;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-right: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .ap-total .ap-row-label {
+      font-size: 17px;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .ap-total .ap-row-value {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .ap-faceid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4px 0 0;
+    }
+
+    .ap-faceid-icon {
+      width: 64px;
+      height: 64px;
+      color: #000;
+      transition: color .25s ease, transform .25s ease;
+    }
+
+    .ap-faceid-icon.scanning {
+      animation: ap-pulse 1.4s ease-in-out infinite;
+    }
+
+    .ap-faceid-icon.success {
+      color: #34c759;
+    }
+
+    @keyframes ap-pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50%      { transform: scale(1.08); opacity: 0.65; }
+    }
+
+    .ap-faceid-text {
+      margin-top: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #000;
+      min-height: 22px;
+    }
+
+    .ap-faceid-sub {
+      margin-top: 2px;
+      font-size: 12px;
+      color: #6e6e73;
+      min-height: 16px;
+    }
+
+    .ap-check {
+      display: none;
+    }
+
+    .ap-faceid-icon.success .ap-face-lines {
+      display: none;
+    }
+
+    .ap-faceid-icon.success .ap-check {
+      display: block;
+      animation: ap-pop .3s ease;
+    }
+
+    @keyframes ap-pop {
+      0%   { transform: scale(.4); opacity: 0; }
+      60%  { transform: scale(1.15); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+
+<body>
+  <section>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-header">
+              <div class="row">
+                <img src="https://z3n-ai-mixed307-5.zendesk.com/hc/theming_assets/01KJQ5KX70DDZ6KJPBXDJJZ905"
+                  alt="Ryanair" class="img-fluid" style="width: 28px; margin-left: 4px;">
+                <div class="col-md-8 payment-title">
+                  Select Payment Method
+                </div>
+              </div>
+            </div>
+            <form action="secure_payment_ryanair.html" id="payment-form">
+              <div class="card-body" style="border-top: 1px solid rgba(0, 0, 0, .125);">
+                <div id="overlay" onclick="off()">
+                  <div id="justify-content-center align-items-center">
+                    <div class="spinner"></div>
+                  </div>
+                </div>
+
+                <p class="text-muted" style="margin-bottom: 16px;">
+                  Choose how you'd like to pay for your booking.
+                </p>
+
+                <label class="payment-option" data-method="apple_pay">
+                  <div class="option-left">
+                    <input type="radio" name="payment_method" value="apple_pay" />
+                    <div>
+                      <span class="option-label">Apple Pay</span>
+                      <span class="option-sub">Pay quickly with Touch ID or Face ID</span>
+                    </div>
+                  </div>
+                  <span class="brand-pill brand-apple">&#63743;&nbsp;Pay</span>
+                </label>
+
+                <label class="payment-option" data-method="google_pay">
+                  <div class="option-left">
+                    <input type="radio" name="payment_method" value="google_pay" />
+                    <div>
+                      <span class="option-label">Google Pay</span>
+                      <span class="option-sub">Use a saved card from your Google account</span>
+                    </div>
+                  </div>
+                  <span class="brand-pill brand-google">G&nbsp;Pay</span>
+                </label>
+
+                <div class="section-divider"><span>or pay with card</span></div>
+
+                <label class="payment-option" data-method="card">
+                  <div class="option-left">
+                    <input type="radio" name="payment_method" value="card" />
+                    <div>
+                      <span class="option-label">Credit or Debit Card</span>
+                      <span class="option-sub">Visa, MasterCard, American Express</span>
+                    </div>
+                  </div>
+                  <div class="payment-brands">
+                    <span class="brand-pill brand-visa">VISA</span>
+                    <span class="brand-pill brand-mc">MC</span>
+                    <span class="brand-pill brand-amex">AMEX</span>
+                  </div>
+                </label>
+
+                <div class="secure-note">
+                  <i class="fa fa-lock"></i> All payments are encrypted and processed securely.
+                </div>
+              </div>
+              <div class="card-footer" style="height: 62px;">
+                <button id="pay-button" type="submit" class="btn btn-success float-right text-right" disabled>
+                  Continue
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="apple-pay-overlay" aria-hidden="true">
+    <div class="ap-sheet" role="dialog" aria-label="Apple Pay confirmation">
+      <div class="ap-handle"></div>
+      <div class="ap-top">
+        <button type="button" class="ap-cancel" id="ap-cancel">Cancel</button>
+        <span class="ap-brand"><span class="ap-logo">&#63743;</span>Pay</span>
+        <span style="width: 50px;"></span>
+      </div>
+
+      <div class="ap-title">Ryanair</div>
+
+      <div class="ap-card">
+        <div class="ap-row">
+          <span class="ap-row-label">Pay</span>
+          <span class="ap-row-value">Ryanair</span>
+        </div>
+        <div class="ap-row">
+          <span class="ap-row-label">Card</span>
+          <span class="ap-row-value"><span class="mini-visa">VISA</span>&bull;&bull;&bull;&bull; 4242</span>
+        </div>
+        <div class="ap-row ap-total">
+          <span class="ap-row-label">Total</span>
+          <span class="ap-row-value">&pound;<span id="ap-amount">0.00</span></span>
+        </div>
+      </div>
+
+      <div class="ap-faceid">
+        <svg id="ap-face" class="ap-faceid-icon scanning" viewBox="0 0 64 64" fill="none"
+          stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <g class="ap-face-lines">
+            <path d="M8 22V14a6 6 0 0 1 6-6h8" />
+            <path d="M42 8h8a6 6 0 0 1 6 6v8" />
+            <path d="M56 42v8a6 6 0 0 1-6 6h-8" />
+            <path d="M22 56h-8a6 6 0 0 1-6-6v-8" />
+            <line x1="24" y1="24" x2="24" y2="30" />
+            <line x1="40" y1="24" x2="40" y2="30" />
+            <path d="M32 22v12" />
+            <path d="M24 42c2 2 5 3 8 3s6-1 8-3" />
+          </g>
+          <g class="ap-check">
+            <circle cx="32" cy="32" r="24" stroke="currentColor" stroke-width="3" />
+            <path d="M21 33 l8 8 l14 -16" />
+          </g>
+        </svg>
+        <div class="ap-faceid-text" id="ap-face-text">Confirm with Face ID</div>
+        <div class="ap-faceid-sub" id="ap-face-sub">Look at your phone to pay</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+
+      let params = new URLSearchParams(window.location.search);
+
+      $('.payment-option').on('click', function () {
+        $('.payment-option').removeClass('selected');
+        $(this).addClass('selected');
+        $(this).find('input[type="radio"]').prop('checked', true);
+        $('#pay-button').prop('disabled', false);
+      });
+
+      function buildRedirectUrl(method) {
+        const baseAction = $('#payment-form').attr('action');
+        if (method === 'apple_pay') {
+          return 'payment_thank_you_ryanair.html';
+        }
+        const query = new URLSearchParams();
+        if (params.get('charge_amount')) query.set('charge_amount', params.get('charge_amount'));
+        if (params.get('booking_ref')) query.set('booking_ref', params.get('booking_ref'));
+        if (params.get('flight_no')) query.set('flight_no', params.get('flight_no'));
+        if (params.get('outbound')) query.set('outbound', params.get('outbound'));
+        if (params.get('seat_type')) query.set('seat_type', params.get('seat_type'));
+        query.set('payment_method', method);
+        return baseAction + '?' + query.toString();
+      }
+
+      function formatAmount(value) {
+        if (!value) return '0.00';
+        const n = Number(value);
+        return isNaN(n) ? value : n.toFixed(2);
+      }
+
+      let applePayTimers = [];
+
+      function clearApplePayTimers() {
+        applePayTimers.forEach(function (t) { clearTimeout(t); });
+        applePayTimers = [];
+      }
+
+      function closeApplePay() {
+        clearApplePayTimers();
+        $('#apple-pay-overlay').removeClass('show');
+        $('#ap-face').removeClass('success').addClass('scanning');
+        $('#ap-face-text').text('Confirm with Face ID');
+        $('#ap-face-sub').text('Look at your phone to pay');
+      }
+
+      function runApplePayFlow() {
+        $('#ap-amount').text(formatAmount(params.get('charge_amount')));
+        $('#ap-face').removeClass('success').addClass('scanning');
+        $('#ap-face-text').text('Confirm with Face ID');
+        $('#ap-face-sub').text('Look at your phone to pay');
+
+        $('#apple-pay-overlay').addClass('show');
+
+        applePayTimers.push(setTimeout(function () {
+          $('#ap-face-text').text('Scanning\u2026');
+          $('#ap-face-sub').text('Hold still');
+        }, 900));
+
+        applePayTimers.push(setTimeout(function () {
+          $('#ap-face').removeClass('scanning').addClass('success');
+          $('#ap-face-text').text('Done');
+          $('#ap-face-sub').text('Face ID confirmed');
+        }, 3000));
+
+        applePayTimers.push(setTimeout(function () {
+          window.location.href = buildRedirectUrl('apple_pay');
+        }, 2900));
+      }
+
+      $('#ap-cancel').on('click', function () {
+        closeApplePay();
+      });
+
+      $('#payment-form').submit(function (e) {
+        e.preventDefault();
+
+        const selected = $('input[name="payment_method"]:checked').val();
+        if (!selected) {
+          return;
+        }
+
+        if (selected === 'apple_pay') {
+          runApplePayFlow();
+          return;
+        }
+
+        $('#overlay').addClass('show');
+
+        setTimeout(function () {
+          window.location.href = buildRedirectUrl(selected);
+        }, 500);
+      });
+    });
+  </script>
+</body>
+
+</html>
